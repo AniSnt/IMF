@@ -1,0 +1,20 @@
+// backend/smart-contracts/IMF.sol  
+pragma solidity ^0.8.0;  
+
+contract IMF {  
+	event CasoRegistrado(uint indexed casoId, string descricao, address autor);  
+
+	struct Caso {  
+    	string descricao;  
+    	address autor;  
+    	bool resolvido;  
+	}  
+
+	Caso[] public casos;  
+
+	function registrarCaso(string memory _descricao) public {  
+    	uint casoId = casos.length;  
+    	casos.push(Caso(_descricao, msg.sender, false));  
+    	emit CasoRegistrado(casoId, _descricao, msg.sender);  
+	}  
+}  
