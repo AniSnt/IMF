@@ -1,0 +1,31 @@
+<!-- frontend/votar.html -->  
+<!DOCTYPE html>  
+<html>  
+  <body>  
+    <h1>Votar no Caso #<span id="casoId"></span></h1>  
+    <button id="aceitar">Aceitar</button>  
+    <button id="rejeitar">Rejeitar</button>  
+
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>  
+    <script>  
+      const provider = new ethers.providers.Web3Provider(window.ethereum);  
+      const casoId = new URLSearchParams(window.location.search).get('casoId');  
+
+      document.getElementById('aceitar').onclick = () => votar(true);  
+      document.getElementById('rejeitar').onclick = () => votar(false);  
+
+      async function votar(decisao) {  
+        await provider.send("eth_requestAccounts", []);  
+        const signer = provider.getSigner();  
+        const contract = new ethers.Contract(  
+          "0x...", // Endereço do contrato  
+          contractABI,  
+          signer  
+        );  
+
+        const tx = await contract.votar(casoId, decisao);  
+        alert("Voto enviado! Aguarde a confirmação.");  
+      }  
+    </script>  
+  </body>  
+</html>  
